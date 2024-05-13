@@ -1,0 +1,51 @@
+<script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
+<script src="https://webglfundamentals.org/webgl/lessons/resources/3d-math.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+<!-- vertex shader -->
+<script id="2d-vertex-shader" type="x-shader/x-vertex">
+attribute vec4 a_position;
+uniform mat4 m_world;
+uniform mat4 u_worldViewProjection;
+
+void main() {
+   gl_Position = u_worldViewProjection * m_world * a_position;
+}
+</script>
+<!-- fragment shader -->
+<script id="2d-fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+uniform vec4 vColor;
+
+void main() {
+   gl_FragColor = vColor;
+}
+</script>
+<canvas id="c"></canvas>
+<div id="uiContainer">
+  <div id="ui">
+    <div id="X"></div>
+    <div id="Y"></div>
+    <div id="Z"></div>
+    <div id="roll"></div>
+    <div id="pitch"></div>
+    <div id="yaw"></div>
+    <div id="scale"></div>
+  </div>
+</div>
+<div>
+  <button onclick="addLocalDeltaPos(myBike, [ 0.1, 0.0, 0.0])">X +</button>
+  <button onclick="addLocalDeltaPos(myBike, [-0.1, 0.0, 0.0])">X -</button>
+  <button onclick="addLocalDeltaPos(myBike, [ 0.0, 0.1, 0.0])">Y +</button>
+  <button onclick="addLocalDeltaPos(myBike, [ 0.0,-0.1, 0.0])">Y -</button>
+  <button onclick="addLocalDeltaPos(myBike, [ 0.0, 0.0, 0.1])">Z +</button>
+  <button onclick="addLocalDeltaPos(myBike, [ 0.0, 0.0,-0.1])">Z -</button>
+</div>
+<div>
+  <button onclick="addLocalDeltaAngle(myBike, 10, 'roll')">Roll +</button>
+  <button onclick="addLocalDeltaAngle(myBike,-10, 'roll')">Roll -</button>
+  <button onclick="addLocalDeltaAngle(myBike, 10, 'pitch')">Pitch +</button>
+  <button onclick="addLocalDeltaAngle(myBike,-10, 'pitch')">Pitch -</button>
+  <button onclick="addLocalDeltaAngle(myBike, 10, 'yaw')">Yaw +</button>
+  <button onclick="addLocalDeltaAngle(myBike,-10, 'yaw')">Yaw -</button>
+</div>

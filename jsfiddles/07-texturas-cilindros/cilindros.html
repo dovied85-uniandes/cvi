@@ -1,0 +1,29 @@
+<script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
+<script src="https://webglfundamentals.org/webgl/lessons/resources/3d-math.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+<!-- vertex shader -->
+<script id="2d-vertex-shader" type="x-shader/x-vertex">
+attribute vec4 a_position;
+attribute vec2 a_textureCoord;
+
+uniform mat4 u_modelView, u_worldViewProj;
+
+varying highp vec2 vTextureCoord;
+
+void main() {
+   gl_Position = u_worldViewProj * u_modelView * a_position;
+   vTextureCoord = a_textureCoord;
+}
+</script>
+<!-- fragment shader -->
+<script id="2d-fragment-shader" type="x-shader/x-fragment">
+varying highp vec2 vTextureCoord;
+
+uniform sampler2D uSampler;
+
+void main() {
+   gl_FragColor = texture2D(uSampler, vTextureCoord);
+}
+</script>
+<canvas id="c"></canvas>

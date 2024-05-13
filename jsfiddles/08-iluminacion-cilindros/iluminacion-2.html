@@ -1,0 +1,52 @@
+<script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
+<script src="https://webglfundamentals.org/webgl/lessons/resources/3d-math.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-ui.js"></script>
+<!-- vertex shader -->
+<script id="2d-vertex-shader" type="x-shader/x-vertex">
+precision mediump float;
+
+attribute vec4 a_position, a_normal;
+attribute vec2 a_textureCoord;
+
+uniform mat4 u_worldView, u_modelView, u_normalMatrix, u_viewProj;
+uniform vec3 u_lightPos;
+uniform vec3 u_lightAmb, u_lightDiff, u_lightSpec;
+uniform float u_shininess;
+
+varying vec2 vTextureCoord;
+varying vec4 fColor;
+
+void main() {
+   // variables intermedias
+   vec3 pos = (u_modelView * a_position).xyz;                            //vextex in eye coords
+   vec3 l = normalize((u_worldView * vec4(u_lightPos, 1.0)).xyz - pos);  //  V->L in eye coords
+   vec3 v = -normalize(pos);                                             //  V->C in eye coords
+   vec3 n = normalize((u_normalMatrix * a_normal).xyz);                  //     N in eye coords
+   vec3 h = normalize(l + v);
+   
+   // cálculos de luz
+   vec3 amb  = u_lightAmb;
+   vec3 diff = max(dot(l, n), 0.0) * u_lightDiff;
+   vec3 spec = pow(max(dot(n, h), 0.0), u_shininess) * u_lightSpec;
+   fColor = vec4(amb + diff + spec, 1.0);
+   
+   // cálculos de posición
+   gl_Position = u_viewProj * u_modelView * a_position;
+   vTextureCoord = a_textureCoord;
+}
+</script>
+<!-- fragment shader -->
+<script id="2d-fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform sampler2D uSampler;
+
+varying vec2 vTextureCoord;
+varying vec4 fColor;
+
+void main() {  
+   gl_FragColor = fColor * texture2D(uSampler, vTextureCoord);
+}
+</script>
+<canvas id="c"></canvas>

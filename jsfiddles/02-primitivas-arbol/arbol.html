@@ -1,0 +1,25 @@
+<script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
+<script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
+<script src="https://webglfundamentals.org/webgl/lessons/resources/3d-math.js"></script>
+<!-- vertex shader -->
+<script id="2d-vertex-shader" type="x-shader/x-vertex">
+attribute vec4 a_position;
+attribute vec3 color;
+varying vec3 vColor;
+uniform mat4 u_worldViewProjection;
+
+void main() {
+   gl_Position = u_worldViewProjection * a_position;
+   vColor = color;
+}
+</script>
+<!-- fragment shader -->
+<script id="2d-fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+varying vec3 vColor;
+
+void main() {
+   gl_FragColor = vec4(vColor, 1.);
+}
+</script>
+<canvas id="c"></canvas>
